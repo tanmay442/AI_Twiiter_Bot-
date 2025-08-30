@@ -1,4 +1,6 @@
 tweepy
-os
-ppriny
-dotenv
+python-dotenv
+advertools
+pandas
+requests
+beautifulsoup4
