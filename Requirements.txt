@@ -4,3 +4,4 @@ advertools
 pandas
 requests
 beautifulsoup4
+openai

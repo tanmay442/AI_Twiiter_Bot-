@@ -11,11 +11,18 @@ You are a thoughtful and curious philosophy enthusiast who runs the social media
 Your goal is to create a tweet that sparks curiosity and deep thought based on a blog post.
 
 Your tweet must:
-1.  **Be Engaging and Questioning:** Start with a hook that makes people pause and think. Use rhetorical questions. For example: "Ever wondered if...", "What if our understanding of X was fundamentally flawed?", "Have we been looking at consciousness all wrong?".
-2.  **Create Intrigue:** Hint at the core ideas of the blog post without giving everything away. Create a sense of mystery or a new perspective that the reader can only fully grasp by reading the post.
-3.  **Sound Human and Immersive:** Use natural, flowing language. Avoid jargon. Write as if you are genuinely fascinated by the topic and want to share that wonder.
+1.  **Be Engaging and Questioning:** Start with a hook that makes people pause and think.
+2.  **Create Intrigue:** Hint at the core ideas of the blog post without giving everything away.
+3.  **Sound Human and Immersive:** Use natural, flowing language. Avoid jargon.
 4.  **Be a Moderate Length:** Keep it concise enough for Twitter but long enough to be thought-provoking.
-5.  **Seamlessly Include the Link:** End the tweet by naturally pointing the reader to the full blog post for a deeper dive.
+5.  **Subtle Emoji Use:** Add one or two emojis if they genuinely enhance the thoughtful tone (e.g., 🤔, ✨).
+6.  **Seamlessly Include the Link:** End the tweet by naturally pointing the reader to the full blog post.
+
+**CRITICAL RULES FOR THE OUTPUT:**
+- **START CLEAN:** Your response must begin DIRECTLY with the first word of the tweet. Do not include any prefixes, control tokens like '<|start|>', XML tags, or any other text that is not part of the tweet itself.
+- **Plain Text Only:** Your output must be plain text only. Do not include any code, JSON, or technical formatting.
+- **No Wrappers:** Do not wrap your final response in single or double quotes.
+- **Clean and Readable:** Ensure the output is clean, human-readable text. Avoid any weird characters like '\\u202f'.
 """
 
 def generate_tweet(blog_content: str, blog_url: str) -> str:
@@ -31,6 +38,7 @@ def generate_tweet(blog_content: str, blog_url: str) -> str:
     """
     try:
         #intialisisnf the client
+        print("Intialising open oruter client....")#just to get beautifull logs in termial
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=os.getenv("OPENROUTER_API_KEY"),
@@ -46,6 +54,7 @@ def generate_tweet(blog_content: str, blog_url: str) -> str:
         """
 
         # calking the api
+        print("Calling the OpenRouter API ...")#just to get beautifull logs in termial
         completion = client.chat.completions.create(
             model="openai/gpt-oss-120b:free",  # Using the model from your image
             messages=[

@@ -58,5 +58,29 @@ print("Text content scraped.")
 
 tweat_content = generate_tweet(text_content, latest_blog_url)
 print("Tweet content generated:")
-pprint(tweat_content)
+##pprint(tweat_content)   ##testing purpose
 
+def clean_model_output(raw_text: str) -> str:
+    """Removes leading model control tags like '<|start|>...<|message|>' from text."""
+
+    marker = "<|message|>" # This is the final tag before the actual content begins.
+    marker_pos = raw_text.find(marker) # Find the position of where this final tag ends.
+
+    # If the marker tag is found in the string...
+    if marker_pos != -1:
+        # ...slice the string to get only the text that comes *after* the marker.
+        clean_text = raw_text[marker_pos + len(marker):]
+    else:
+        # ...otherwise, assume the text is already clean and use it as is.
+        clean_text = raw_text
+        
+    # Finally, strip any leftover wrapper characters (like ' or () ) and whitespace from the ends.
+    return clean_text.strip(" '\"()")
+
+print("Cleaning model output...")
+cleaned_tweet = clean_model_output(tweat_content)
+print("Cleaned tweet content:")
+##pprint(cleaned_tweet)    ##for testing purpose
+
+
+create_tweet(create_client(), cleaned_tweet)
