@@ -2,9 +2,8 @@ import tweepy
 import os
 from pprint import pprint
 from dotenv import load_dotenv
-import advertools as adv
-import pandas as pd
 from scraping_utils import scrape_url_for_text_content
+from sitemap_utils import fetch_blog_urls_from_sitemap
 from openai import OpenAI
 
 
@@ -31,28 +30,14 @@ def create_tweet(client, text):
     return response
 
 
-
 sitemap_url = 'https://philosophyspread.vercel.app/sitemap.xml'
 
-def fetch_URL(sitemap_url):
-    print(f"Fetching sitemap from: {sitemap_url}")
-    try:
-        sitemap_df = adv.sitemap_to_df(sitemap_url)
-        print(f"Sitemap data loaded into a DataFrame with {len(sitemap_df)} entries.")
-        def filetering_urls(sitemap_df):
-            global filtered_df
-            filtered_df = sitemap_df[sitemap_df['loc'].str.contains('/blog/')]
-            print(f"Filtered {len(filtered_df)} blog URLs.")
-            return filtered_df
-        filetering_urls(sitemap_df)
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    return filtered_df
+filter_string = '/blog/'  # to segregate url basically 
 
+##Fetching the Sitemap and filtered URLs
+blog_urls_df = fetch_blog_urls_from_sitemap(sitemap_url, filter_string)
 
-blog_urls_df = fetch_URL(sitemap_url)
-
-
+##getting the latest blog URL
 def get_latest_blog_url(blog_urls_df):
     print("Getting latest blog URL...")
     try:
@@ -66,31 +51,8 @@ def get_latest_blog_url(blog_urls_df):
 latest_blog_url = get_latest_blog_url(blog_urls_df)
 print("Scraping latest blog for text content...")
 text_content = scrape_url_for_text_content(latest_blog_url)
-print("Writing scraped content to latest_blog.txt...")
-with open('latest_blog.txt', 'w', encoding='utf-8') as file:
-    file.write(text_content)
-print("Done.")
+print("Text content scraped.")
 
 
 
 
-
-#Inintialising the open ai Clienr 
-
-client = OpenAI(
-  base_url="https://openrouter.ai/api/v1",
-  api_key= "<OPENROUTER_API_KEY>",
-)
-
-
-completion = client.chat.completions.create(
-    model="openai/gpt-oss-120b:free",
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the meaning of life?"}
-    ]
-)
-print(completion.choices[0].message.content)
-
-
-##MOre to do left ot do but will do later cause  i aam a big eater gonna eat some food
