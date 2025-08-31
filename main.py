@@ -4,7 +4,7 @@ from pprint import pprint
 from dotenv import load_dotenv
 from scraping_utils import scrape_url_for_text_content
 from sitemap_utils import fetch_blog_urls_from_sitemap
-from openai import OpenAI
+from Content_gen_utils import generate_tweet
 
 
 
@@ -53,6 +53,10 @@ print("Scraping latest blog for text content...")
 text_content = scrape_url_for_text_content(latest_blog_url)
 print("Text content scraped.")
 
+##print(type(text_content)) #just confirming hte type is str
 
 
+tweat_content = generate_tweet(text_content, latest_blog_url)
+print("Tweet content generated:")
+pprint(tweat_content)
 

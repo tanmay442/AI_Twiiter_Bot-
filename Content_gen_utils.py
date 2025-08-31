@@ -18,7 +18,7 @@ Your tweet must:
 5.  **Seamlessly Include the Link:** End the tweet by naturally pointing the reader to the full blog post for a deeper dive.
 """
 
-def generate_philosophy_tweet(blog_content: str, blog_url: str) -> str:
+def generate_tweet(blog_content: str, blog_url: str) -> str:
     """
     Generates an engaging tweet for a philosophy blog post.
 
