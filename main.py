@@ -30,33 +30,43 @@ def create_tweet(client, text):
     return response
 
 
-sitemap_url = 'https://philosophyspread.vercel.app/sitemap.xml'
 
-filter_string = '/blog/'  # to segregate url basically 
+# Prompt user for configuration choice
+print("Do you want to use the preconfigured blog settings or enter a custom blog URL?")
+print("1. Preconfigured (latest blog from sitemap)")
+print("2. Custom blog URL")
+choice = input("Enter 1 or 2: ").strip()
 
-##Fetching the Sitemap and filtered URLs
-blog_urls_df = fetch_blog_urls_from_sitemap(sitemap_url, filter_string)
+if choice == "2":
+    selected_blog_url = input("Enter the custom blog URL: ").strip()
+    print(f"Using custom blog URL: {selected_blog_url}")
+else:
+    sitemap_url = 'https://philosophyspread.vercel.app/sitemap.xml'
+    filter_string = '/blog/'  # to segregate url basically 
+    # Fetching the Sitemap and filtered URLs
+    blog_urls_df = fetch_blog_urls_from_sitemap(sitemap_url, filter_string)
 
-##getting the latest blog URL
-def get_latest_blog_url(blog_urls_df):
-    print("Getting latest blog URL...")
-    try:
-        last_url = blog_urls_df.iloc[-1]['loc']
-        print(f"Latest blog URL found: {last_url}")
-        return last_url
-    except Exception as e:
-        print(f"An error occurred while fetching the latest blog URL: {e}")
-        return None
+    # Getting the latest blog URL
+    def get_latest_blog_url(blog_urls_df):
+        print("Getting latest blog URL...")
+        try:
+            last_url = blog_urls_df.iloc[-1]['loc']
+            print(f"Latest blog URL found: {last_url}")
+            return last_url
+        except Exception as e:
+            print(f"An error occurred while fetching the latest blog URL: {e}")
+            return None
 
-latest_blog_url = get_latest_blog_url(blog_urls_df)
-print("Scraping latest blog for text content...")
-text_content = scrape_url_for_text_content(latest_blog_url)
+    selected_blog_url = get_latest_blog_url(blog_urls_df)
+
+print("Scraping blog for text content...")
+text_content = scrape_url_for_text_content(selected_blog_url)
 print("Text content scraped.")
 
 ##print(type(text_content)) #just confirming hte type is str
 
 
-tweat_content = generate_tweet(text_content, latest_blog_url)
+tweat_content = generate_tweet(text_content, selected_blog_url)
 print("Tweet content generated:")
 ##pprint(tweat_content)   ##testing purpose
 
