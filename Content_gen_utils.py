@@ -1,6 +1,7 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
+import pprint
 
 
 load_dotenv()
@@ -71,8 +72,14 @@ def generate_tweet(blog_content: str, blog_url: str) -> str:
 
         # ai response here 
         tweet = completion.choices[0].message.content
+        pprint(tweet)  # For debugging purposes
+       #print (type(tweet)) #just confirming hte type is str
         return tweet
 
     except Exception as e:
+        print("API FAILED")
         return f"An error occurred: {e}"
+    
+    
+    
 

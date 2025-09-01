@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 from scraping_utils import scrape_url_for_text_content
 from sitemap_utils import fetch_blog_urls_from_sitemap
 from Content_gen_utils import generate_tweet
-
-
+import sys
 
 print("Loading environment variables...")
 load_dotenv()
@@ -65,10 +64,15 @@ print("Text content scraped.")
 
 ##print(type(text_content)) #just confirming hte type is str
 
+try:
+    tweat_content = generate_tweet(text_content, selected_blog_url)
+    print("Tweet content generated:")
+    ##pprint(tweat_content)   ##testing purpose
+except Exception as e:
+    print(f"An error occurred while generating tweet content: {e}")
+    sys.exit(0)
 
-tweat_content = generate_tweet(text_content, selected_blog_url)
-print("Tweet content generated:")
-##pprint(tweat_content)   ##testing purpose
+   
 
 def clean_model_output(raw_text: str) -> str:
     """Removes leading model control tags like '<|start|>...<|message|>' from text."""
@@ -91,6 +95,5 @@ print("Cleaning model output...")
 cleaned_tweet = clean_model_output(tweat_content)
 print("Cleaned tweet content:")
 ##pprint(cleaned_tweet)    ##for testing purpose
-
 
 create_tweet(create_client(), cleaned_tweet)
