@@ -1,11 +1,12 @@
 import tweepy
 import os
+import sys
 from pprint import pprint
 from dotenv import load_dotenv
 from scraping_utils import scrape_url_for_text_content
 from sitemap_utils import fetch_blog_urls_from_sitemap
 from Content_gen_utils import generate_tweet
-import sys
+
 
 print("Loading environment variables...")
 load_dotenv()
