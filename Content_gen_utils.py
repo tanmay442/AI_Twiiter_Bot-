@@ -56,7 +56,7 @@ def generate_tweet(blog_content: str, blog_url: str) -> str:
         # calking the api
         print("Calling the OpenRouter API ...")#just to get beautifull logs in termial
         completion = client.chat.completions.create(
-            model="openai/gpt-oss-120b:free",  # Using the model from your image
+            model="microsoft/mai-ds-r1:free",  # Using the model from your image
             messages=[
                 {
                     "role": "system",
@@ -71,7 +71,7 @@ def generate_tweet(blog_content: str, blog_url: str) -> str:
 
         # ai response here 
         tweet = completion.choices[0].message.content
-        #print(tweet)  # For debugging purposes
+        print(tweet)  # For debugging purposes
         #print (type(tweet)) #just confirming hte type is str
         return tweet
 
